@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Community Events</title>
+    </head>
+    <body>
+      <div class="header">
+        <h1>Community Events</h1>
+        <p>Your source for great events.</p>
+      </div>
+      <div class="event-list">
+        <ul>
+          {% for event in events %}
+            <li>{{ event.event_name }} - {{ event.event_date }}</li>
+          {% endfor %}
+        </ul>
+        <a href="/events/new">Submit an Event</a>
+      </div>
+
+    </body>
+</html>

@@ -1,0 +1,6 @@
+__pycache__/*
+.env
+firebase-private-key.json
+.env
+/app/__pycache__/*
+app/firebase-private-key.json
