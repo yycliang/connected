@@ -1,21 +1,31 @@
 # ---- YOUR APP STARTS HERE ----
 # -- Import section --
+import pymongo
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import redirect
+from flask_pymongo import PyMongo
+from flask_pymongo import ObjectId
+from datetime import datetime
+from flask import session, url_for
+import os
 # from flask_pymongo import PyMongo
 
 
 # -- Initialization section --
 app = Flask(__name__)
 
+app.config['URI'] = os.getenv("URI")
+URI = app.config["URI"]
+
 # name of database
-# app.config['MONGO_DBNAME'] = 'Connected'
+app.config['MONGO_DBNAME'] = 'Connected'
 
 # URI of database
-# app.config['MONGO_URI'] = 'mongodb+srv://ConnectedUser:bjfHkVFz8izNs6KW@cluster0.2crxe.mongodb.net/Connected?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = URI
 
-# mongo = PyMongo(app)
+mongo = PyMongo(app)
 
 # -- Routes section --
 # INDEX
