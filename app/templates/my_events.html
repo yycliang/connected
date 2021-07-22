@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>{{ session['username'] }}'s Community Events</title>
+    </head>
+    <body>
+      <div class="header">
+        <h1>{{ session['username'] }}'s Community Events</h1>
+        <p>Your source for great events.</p>
+      </div>
+      <div class="event-list">
+        <ul>
+          {% for event in events %}
+            <li><a href="/events/{{event._id}}">{{ event.event.title() }} - {{ event.dateStr }}</a> {% if event.user %}(Posted by {{ event.user }}){% endif %} <a href="/events/delete/{{event._id}}">[x]</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <p><a href="/events/new">Submit an Event</a></p>
+      <p><a href="/">All Events</a></p>
+      <p>{{ message }} <a href="/logout">Log out</a></p>
+    </body>
+</html>

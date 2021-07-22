@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Community Events</title>
+    </head>
+    <body>
+      <div class="header">
+        <h1>Community Events</h1>
+        <p>Your source for great events.</p>
+      </div>
+      <div class="event-list">
+        <ul>
+          {% for event in events %}
+            <li><a href="/events/{{event._id}}">{{ event.event.title() }} - {{ event.dateStr }}</a> {% if event.user %}(Posted by {{ event.user }}){% endif %} <a href="/events/delete/{{event._id}}">[x]</a></li>
+          {% endfor %}
+        </ul>
+        <a href="/events/new">Submit an Event</a>
+      </div>
+      
+      {% if message %}
+        <p><a href="/events/myevents">My Events</a></p>
+        <p>{{ message }} <a href="/logout">Log out</a></p>
+      {% else %}
+        <h2>Log in</h2>
+        <div>
+          <form action="/login" method="POST">
+            <label for="name">Name</label>
+            <input type="text" name="username">
+            <label for="password">Password</label>
+            <input type="password" name="password">
+            <input type="submit" value="Log In">
+          </form>
+          <p>No account? <a href="/signup">Sign up.</a></p>
+        </div>
+      {% endif %}
+    </body>
+</html>

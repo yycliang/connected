@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>Event Page</title>
+    </head>
+    <body>
+      <div class="header">
+        <h1>{{event.event.title()}} ({{event.date}})</h1>
+        <h3>{% if event.user %}Posted by {{event.user}}{% endif %}</h3>
+      </div>
+      
+      <p><a href="/events/new">Submit an Event</a></p>
+      <p><a href="/">All Events</a></p>
+      {% if session %}
+        <p><a href="/logout">Log out</a></p>
+      {% endif %}
+    </body>
+</html>
