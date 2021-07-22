@@ -10,10 +10,10 @@ from flask import request
 app = Flask(__name__)
 
 # name of database
-# app.config['MONGO_DBNAME'] = 'database-name'
+# app.config['MONGO_DBNAME'] = 'Connected'
 
 # URI of database
-# app.config['MONGO_URI'] = 'mongo-uri'
+# app.config['MONGO_URI'] = 'mongodb+srv://ConnectedUser:bjfHkVFz8izNs6KW@cluster0.2crxe.mongodb.net/Connected?retryWrites=true&w=majority'
 
 # mongo = PyMongo(app)
 
