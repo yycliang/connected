@@ -51,9 +51,9 @@ def postings():
     return render_template('postings.html', postings = postings)
 
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
+@app.route('/users')
+def users():
+    return render_template('users.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
