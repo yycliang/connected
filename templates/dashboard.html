@@ -123,18 +123,26 @@
                     <h3 class="text-center p-2">Track Your Application Process</h3>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         <div class="col-4">
-                            {% for dashboard in dashboard %}
+                            {% for saved in saved %}
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow-sm">
-                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ saved.image }}"/>
                                         <div class="card-body">
-                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <h4 class="card-text">{{saved.title}}</h4>
+                                        <p class="card-text">{{saved.description}}</p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
-                                            </div>
-                                            <small class="text-muted">{{ dashboard.date }}</small>
+                                            <form action="/change" method="POST">
+                                                <input type="hidden" name = "objectID" value = "{{saved._id}}"></input>
+                                                <label for="status">Status:</label>
+                                                <select id="status" name="status">
+                                                    <option value="saved">Saved</option>
+                                                    <option value="inprogress">In Progress</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                                <button type="submit" value="submit">Submit</button>
+                                            </form>
+                                            <small class="text-muted">{{ saved.date }}</small>
                                         </div>
                                         </div>
                                     </div>
@@ -143,18 +151,26 @@
                             {% endfor %}
                         </div>
                         <div class="col-4">
-                            {% for dashboard in dashboard %}
+                            {% for progress in progress %}
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow-sm">
-                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ progress.image }}"/>
                                         <div class="card-body">
-                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <h4 class="card-text">{{progress.title}}</h4>
+                                        <p class="card-text">{{progress.description}}</p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
-                                            </div>
-                                            <small class="text-muted">{{ dashboard.date }}</small>
+                                            <form action="/change" method="POST">
+                                                <input type="hidden" name = "objectID" value = "{{progress._id}}"></input>
+                                                <label for="status">Status:</label>
+                                                <select id="status" name="status">
+                                                    <option value="inprogress">In Progress</option>
+                                                    <option value="saved">Saved</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                                <button type="submit" value="submit">Submit</button>
+                                            </form>
+                                            <small class="text-muted">{{ progress.date }}</small>
                                         </div>
                                         </div>
                                     </div>
@@ -163,18 +179,26 @@
                             {% endfor %}
                         </div>
                         <div class="col-4">
-                            {% for dashboard in dashboard %}
+                            {% for completed in completed %}
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow-sm">
-                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ completed.image }}"/>
                                         <div class="card-body">
-                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <h4 class="card-text">{{completed.title}}</h4>
+                                        <p class="card-text">{{completed.description}}</p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
-                                            </div>
-                                            <small class="text-muted">{{ dashboard.date }}</small>
+                                            <form action="/change" method="POST">
+                                                <input type="hidden" name = "objectID" value = "{{completed._id}}"></input>
+                                                <label for="status">Status:</label>
+                                                <select id="status" name="status">
+                                                    <option value="completed">Completed</option>
+                                                    <option value="saved">Saved</option>
+                                                    <option value="inprogress">In Progress</option>
+                                                </select>
+                                                <button type="submit" value="submit">Submit</button>
+                                            </form>
+                                            <small class="text-muted">{{ completed.date }}</small>
                                         </div>
                                         </div>
                                     </div>
