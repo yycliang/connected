@@ -48,15 +48,16 @@ def dashboard():
         saved = list(collections2.find({"status":"saved", "user": session['username']}))
         progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
         completed = list(collections2.find({"status":"completed", "user": session['username']}))
-        users = list(collections3.find({"email": session['username']}))
+        users = list(collections3.find({"username": session['username']}))
         return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
     elif request.method == "GET":
         dashboard = list(collections2.find({}))
-        saved = list(collections2.find({"status":"saved", "user": session['username']}))
-        progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
-        completed = list(collections2.find({"status":"completed", "user": session['username']}))
-        users = list(collections3.find({"email": session['username']}))
-        return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
+        # saved = list(collections2.find({"status":"saved", "user": session['username']}))
+        # progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+        # completed = list(collections2.find({"status":"completed", "user": session['username']}))
+        users = list(collections3.find({"username": session['username']}))
+        return render_template('dashboard.html', dashboard = dashboard, users = users)
+        # return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
@@ -74,14 +75,15 @@ def postings():
 def users():
     usersCol = mongo.db.Users
     users = list(usersCol.find({}))
-    return render_template('users.html', users = users)
+    if request.method == 'GET':
+        return render_template('users.html', users = users)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         users = mongo.db.Users
         collections2 = mongo.db.Dashboard
-        login_user = users.find_one({'email': request.form['username']})
+        login_user = users.find_one({'name': request.form['username']})
         if login_user is None:
             return render_template('login.html', error = 'User does not exist. Sign up to create an account.', time=datetime.now())
         if login_user:
@@ -96,18 +98,17 @@ def login():
     elif request.method == 'GET':
         return render_template('login.html', time=datetime.now())
 
-
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html', time=datetime.now())
     elif request.method == 'POST':
         users = mongo.db.Users
-        existing_user = users.find_one({'email': request.form['username']})
+        existing_user = users.find_one({'username' : request.form['username']})
         if existing_user is None:
             users.insert({
                 'fullname': request.form['fullname'], 
-                'email': request.form['username'], 
+                'username': request.form['username'], 
                 'location': request.form['location'],             
                 'major': request.form['major'], 
                 'github': request.form['github'], 
