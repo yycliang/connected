@@ -37,35 +37,36 @@ def index():
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
     collections = mongo.db.Postings
-    collections2 = mongo.db.Marked
+    collections2 = mongo.db.Dashboard
 
     if request.method == "POST":
         id = request.form['objectID']
-        collections2.insert(collections.find({"_id":ObjectId(id)}))
+        posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
+        id2 = posting[0]
         collections2.update_one(
-        {"_id":id},
+        {"_id":id2},
         {
                 "$set":{
                         "user": session['username']
                         },
                 }
         )
-    marked = list(collections2.find({}))
-    return render_template('dashboard.html', marked = marked)
+    dashboard = list(collections2.find({}))
+    return render_template('dashboard.html', dashboard = dashboard)
 
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     collections = mongo.db.Postings
-    collections2 = mongo.db.Marked
-    marked = list(collections2.find({}))
+    collections2 = mongo.db.Dashboard
+    dashboard = list(collections2.find({}))
     postings = list(collections.find({}))
     if request.method == "POST":
         post_title = request.form['post_title']
         post_description = request.form['post_description']
         image_link = request.form['image_link']
         collections.insert({'title': post_title, 'description': post_description, 'image': image_link})
-    return render_template('postings.html', postings = postings, marked = marked)
+    return render_template('postings.html', postings = postings, dashboard = dashboard)
 
 
 @app.route('/users')
