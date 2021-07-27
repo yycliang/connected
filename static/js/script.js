@@ -1,8 +1,9 @@
 console.log("Connected");
 const pages = ["index", "postings", "users", "dashboard", "signup", "login"]
-pages.forEach(makeActive);
-// function makeActive({
-//     if(document.URL.includes("index")) {
-//         console.log("it includes index")
-//     }
-// });
+pages.forEach((page)=>{
+       if (document.URL.includes(`${page}`)){
+           document.querySelector(`#${page}`).style.color = 'white';
+            console.log(`it includes ${page}`);
+       }
+    }
+)
