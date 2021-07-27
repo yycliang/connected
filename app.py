@@ -38,7 +38,7 @@ def index():
 def dashboard():
     collections = mongo.db.Postings
     collections2 = mongo.db.Dashboard
-
+    collections3 = mongo.db.Users
     if request.method == "POST":
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
@@ -46,14 +46,18 @@ def dashboard():
         collections2.update_one(
         {"_id":id2},
         {
-                "$set":{
-                        "user": session['username']
-                        },
-                }
+            "$set":{
+                    "user": session['username']
+                    },
+            }
         )
-    dashboard = list(collections2.find({}))
-    return render_template('dashboard.html', dashboard = dashboard)
-
+        users = list(collections3.find({"email":session['username']}))
+        dashboard = list(collections2.find({}))
+        return render_template('dashboard.html', users = users, dashboard = dashboard)
+    elif request.method == "GET":
+        users = list(collections3.find({"email":session['username']}))
+        dashboard = list(collections2.find({}))
+        return render_template('dashboard.html', users = users, dashboard = dashboard)
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
@@ -69,17 +73,19 @@ def postings():
     return render_template('postings.html', postings = postings, dashboard = dashboard)
 
 
-@app.route('/users')
+@app.route('/users', methods=['GET','POST', 'ET'])
 def users():
-    return render_template('users.html')
-
+    usersCol = mongo.db.Users
+    users = list(usersCol.find({}))
+    if request.method == 'GET':
+        return render_template('users.html', users = users)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         users = mongo.db.Users
         # postings = mongo.db.Postings
-        login_user = users.find_one({'name': request.form['username']})
+        login_user = users.find_one({'email': request.form['username']})
         if login_user is None:
             return render_template('login.html', error = 'User does not exist. Sign up to create an account.', time=datetime.now())
         if login_user:
@@ -87,7 +93,7 @@ def login():
                 session['username'] = request.form['username']
                 # user_postings = list(postings.find({'user': session['username']}))
                 return render_template('dashboard.html', time=datetime.now(), user = login_user)
-        return render_template('login.html', error = 'Invalid username/password combination. Try again', time=datetime.now())
+        return render_template('login.html', error = 'Invalid email/password combination. Try again', time=datetime.now())
     elif request.method == 'GET':
         return render_template('login.html', time=datetime.now())
 
@@ -98,13 +104,21 @@ def signup():
         return render_template('signup.html', time=datetime.now())
     elif request.method == 'POST':
         users = mongo.db.Users
-        existing_user = users.find_one({'name' : request.form['username']})
+        existing_user = users.find_one({'email' : request.form['username']})
         if existing_user is None:
             users.insert({
-                'name': request.form['username'], 
+                'fullname': request.form['fullname'], 
+                'email': request.form['username'], 
+                'location': request.form['location'],             
+                'major': request.form['major'], 
+                'github': request.form['github'], 
                 'password': request.form['password'],
             })
             session['username'] = request.form['username']
-            return redirect('/postings')
+            return redirect('/users')
         return render_template('signup.html', time=datetime.now(), error = 'User already exists! Try logging in instead.')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
