@@ -34,21 +34,38 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
-    return render_template('dashboard.html')
+    collections = mongo.db.Postings
+    collections2 = mongo.db.Marked
+
+    if request.method == "POST":
+        id = request.form['objectID']
+        collections2.insert(collections.find({"_id":ObjectId(id)}))
+        collections2.update_one(
+        {"_id":id},
+        {
+                "$set":{
+                        "user": session['username']
+                        },
+                }
+        )
+    marked = list(collections2.find({}))
+    return render_template('dashboard.html', marked = marked)
 
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     collections = mongo.db.Postings
+    collections2 = mongo.db.Marked
+    marked = list(collections2.find({}))
     postings = list(collections.find({}))
     if request.method == "POST":
         post_title = request.form['post_title']
         post_description = request.form['post_description']
         image_link = request.form['image_link']
         collections.insert({'title': post_title, 'description': post_description, 'image': image_link})
-    return render_template('postings.html', postings = postings)
+    return render_template('postings.html', postings = postings, marked = marked)
 
 
 @app.route('/users')
