@@ -52,9 +52,9 @@ def dashboard():
         return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
     elif request.method == "GET":
         dashboard = list(collections2.find({}))
-        # saved = list(collections2.find({"status":"saved", "user": session['username']}))
-        # progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
-        # completed = list(collections2.find({"status":"completed", "user": session['username']}))
+        saved = list(collections2.find({"status":"saved", "user": session['username']}))
+        progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+        completed = list(collections2.find({"status":"completed", "user": session['username']}))
         users = list(collections3.find({"email": session['username']}))
         return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
 
@@ -74,15 +74,14 @@ def postings():
 def users():
     usersCol = mongo.db.Users
     users = list(usersCol.find({}))
-    if request.method == 'GET':
-        return render_template('users.html', users = users)
+    return render_template('users.html', users = users)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         users = mongo.db.Users
         collections2 = mongo.db.Dashboard
-        login_user = users.find_one({'name': request.form['username']})
+        login_user = users.find_one({'email': request.form['username']})
         if login_user is None:
             return render_template('login.html', error = 'User does not exist. Sign up to create an account.', time=datetime.now())
         if login_user:
@@ -104,7 +103,7 @@ def signup():
         return render_template('signup.html', time=datetime.now())
     elif request.method == 'POST':
         users = mongo.db.Users
-        existing_user = users.find_one({'email' : request.form['username']})
+        existing_user = users.find_one({'email': request.form['username']})
         if existing_user is None:
             users.insert({
                 'fullname': request.form['fullname'], 
