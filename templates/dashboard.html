@@ -51,7 +51,7 @@
                                     <h4>{{ user.fullname }}</h4>
                                     <p class="text-secondary mb-1">{{ user.github }}</p>
                                     <p class="text-secondary mb-1">Major: {{ user.major }}</p>
-                                    <p class="text-muted font-size-sm">{{ user.location }}</p>
+                                    <p class="font-size-sm">{{ user.location }}</p>
                                     <button class="btn btn-outline-primary"><a href="mailto:{{ user.email }}">Email</a></button>
                                     </div>
                                 </div>
@@ -113,26 +113,70 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
+                    </div>
                 </div>
-                <br>
-                <div class="album py-4 bg-light">
-                    <div class="container p-2">
-                        <h3 class="text-center p-2">Track Your Application Process</h3>
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            </div>
+            <!-- the formatted one but not correct content -->
+            <div class="album py-4 bg-light">
+                <div class="container p-2">
+                    <h3 class="text-center p-2">Track Your Application Process</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                        <div class="col-4">
                             {% for dashboard in dashboard %}
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
-                                    <div class="card-body">
-                                    <p class="card-text">{{dashboard.description}}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-secondary">In Progress</button>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <div class="card-body">
+                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
+                                            </div>
+                                            <small class="text-muted">{{ dashboard.date }}</small>
                                         </div>
-                                        <small class="text-muted">{{ dashboard.date }}</small>
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-4">
+                            {% for dashboard in dashboard %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <div class="card-body">
+                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
+                                            </div>
+                                            <small class="text-muted">{{ dashboard.date }}</small>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-4">
+                            {% for dashboard in dashboard %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ dashboard.image }}"/>
+                                        <div class="card-body">
+                                        <p class="card-text">{{dashboard.description}}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-secondary">In Progress</button>
+                                            </div>
+                                            <small class="text-muted">{{ dashboard.date }}</small>
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -142,10 +186,8 @@
                 </div>
             </div>
         </div>
-   
-    
-    <!-- Footer -->
-    {% include 'footer.html' %}
+        <!-- Footer -->
+        {% include 'footer.html' %}
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
   </body>

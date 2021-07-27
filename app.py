@@ -43,34 +43,31 @@ def dashboard():
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
         id2 = posting[0]
-        collections2.update_one(
-        {"_id":id2},
-        {
-            "$set":{
-                    "user": session['username']
-                    },
-            }
-        )
-        users = list(collections3.find({"email":session['username']}))
-        dashboard = list(collections2.find({}))
-        return render_template('dashboard.html', users = users, dashboard = dashboard)
+        collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "saved"}})
+        dashboard = list(collections2.find({"user": session['username']}))
+        saved = list(collections2.find({"status":"saved", "user": session['username']}))
+        progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+        completed = list(collections2.find({"status":"completed", "user": session['username']}))
+        users = list(collections3.find({"email": session['username']}))
+        return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
     elif request.method == "GET":
-        users = list(collections3.find({"email":session['username']}))
         dashboard = list(collections2.find({}))
-        return render_template('dashboard.html', users = users, dashboard = dashboard)
+        # saved = list(collections2.find({"status":"saved", "user": session['username']}))
+        # progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+        # completed = list(collections2.find({"status":"completed", "user": session['username']}))
+        users = list(collections3.find({"email": session['username']}))
+        return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     collections = mongo.db.Postings
-    collections2 = mongo.db.Dashboard
-    dashboard = list(collections2.find({}))
     postings = list(collections.find({}))
     if request.method == "POST":
         post_title = request.form['post_title']
         post_description = request.form['post_description']
         image_link = request.form['image_link']
         collections.insert({'title': post_title, 'description': post_description, 'image': image_link})
-    return render_template('postings.html', postings = postings, dashboard = dashboard)
+    return render_template('postings.html', postings = postings)
 
 
 @app.route('/users', methods=['GET','POST', 'ET'])
@@ -84,16 +81,19 @@ def users():
 def login():
     if request.method == 'POST':
         users = mongo.db.Users
-        # postings = mongo.db.Postings
-        login_user = users.find_one({'email': request.form['username']})
+        collections2 = mongo.db.Dashboard
+        login_user = users.find_one({'name': request.form['username']})
         if login_user is None:
             return render_template('login.html', error = 'User does not exist. Sign up to create an account.', time=datetime.now())
         if login_user:
             if request.form['password'] == login_user['password']:
                 session['username'] = request.form['username']
-                # user_postings = list(postings.find({'user': session['username']}))
-                return render_template('dashboard.html', time=datetime.now(), user = login_user)
-        return render_template('login.html', error = 'Invalid email/password combination. Try again', time=datetime.now())
+                dashboard = list(collections2.find({"user": session['username']}))
+                saved = list(collections2.find({"status":"saved", "user": session['username']}))
+                progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+                completed = list(collections2.find({"status":"completed", "user": session['username']}))
+                return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed)
+        return render_template('login.html', error = 'Invalid username/password combination. Try again', time=datetime.now())
     elif request.method == 'GET':
         return render_template('login.html', time=datetime.now())
 
@@ -122,3 +122,19 @@ def signup():
 def logout():
     session.clear()
     return redirect('/')
+
+@app.route('/change', methods=['GET','POST','ET'])
+def change():
+    collections2 = mongo.db.Dashboard
+    if request.method == "POST":
+        id = request.form['objectID']
+        status = request.form['status']
+        collections2.update_one(
+            {"_id":ObjectId(id)},
+            {"$set":{"status": status}}
+            )
+    dashboard = list(collections2.find({"user": session['username']}))
+    saved = list(collections2.find({"status":"saved", "user": session['username']}))
+    progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+    completed = list(collections2.find({"status":"completed", "user": session['username']}))
+    return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed)
