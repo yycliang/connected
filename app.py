@@ -36,11 +36,14 @@ collections3 = mongo.db.Users
 @app.route('/')
 @app.route('/index')
 def index():
+    session['username'] = ""
     return render_template('index.html')
 
 
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
+    if session['username'] == "":
+        redirect('/login')
     if request.method == "POST":
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
@@ -57,11 +60,11 @@ def dashboard():
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     postings = list(collections.find({}))
-    for i in range(len(postings) - 1):
-        postingTitle = postings[i]["title"]
-        if collections2.find({"user": session['username'], "title": postingTitle}):
-            postings.pop(i)
-            i -= 1
+    dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "title": 1}))
+    dash = []
+    for i in dashboard:
+        dash.append(i["title"])  
+    postings = [elem for elem in postings if elem["title"] not in dash]
     if request.method == "POST":
         post_title = request.form['post_title']
         post_company = request.form['post_company']
@@ -116,6 +119,7 @@ def signup():
 @app.route('/logout')
 def logout():
     session.clear()
+    session['username'] = ""
     return redirect('/')
 
 @app.route('/change', methods=['GET','POST','ET'])
@@ -128,13 +132,17 @@ def change():
             {"_id":ObjectId(id)},
             {"$set":{"status": status}}
             )
-
+        if status == "inprogress":
+            collections2.update_one(
+            {"_id":ObjectId(id)},
+            {"$set":{"checklist": []}}
+            )
     return redirect(url_for('dashboard'))
 
 @app.route('/progress/<_id>', methods=['GET','POST','ET'])
 def progressid(_id):
     indexes = []
-    checklist = []
+    checklist = list(collections2.find({"_id":  ObjectId(_id)}, {"_id": 0, "checklist": 1}))[0]["checklist"]
     if request.method == "POST":
         checklist = request.form.getlist('jobcheckbox')
     collections2.update_one(
