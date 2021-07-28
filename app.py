@@ -43,28 +43,28 @@ def index():
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
     if session['username'] == "":
-        redirect('/login')
+        redirect(url_for('login'))
     if request.method == "POST":
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
         id2 = posting[0]
-        collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "saved"}})
+        collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "interested", "postingID": id}})
     dashboard = list(collections2.find({"user": session['username']}))
-    saved = list(collections2.find({"status":"saved", "user": session['username']}))
+    interested = list(collections2.find({"status":"interested", "user": session['username']}))
     progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
     completed = list(collections2.find({"status":"completed", "user": session['username']}))
     users = list(collections3.find({"email": session['username']}))
-    return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
+    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users)
         
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     postings = list(collections.find({}))
-    dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "title": 1}))
+    dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "postingID": 1}))
     dash = []
     for i in dashboard:
-        dash.append(i["title"])  
-    postings = [elem for elem in postings if elem["title"] not in dash]
+        dash.append(i["postingID"])
+    postings = [elem for elem in postings if str(elem["_id"]) not in dash]
     if request.method == "POST":
         post_title = request.form['post_title']
         post_company = request.form['post_company']
@@ -102,7 +102,7 @@ def signup():
         return render_template('signup.html', time=datetime.now())
     elif request.method == 'POST':
         users = mongo.db.Users
-        existing_user = users.find_one({'username' : request.form['username']})
+        existing_user = users.find_one({'email' : request.form['username']})
         if existing_user is None:
             users.insert({
                 'fullname': request.form['fullname'], 

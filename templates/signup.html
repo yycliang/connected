@@ -69,6 +69,9 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <p>Have an account? <a href="/login">LOG IN</a></p>
+                    {% if error %}
+                        <p id="error"> {{ error }} </p>
+                    {% endif %}
                     <button style="margin: 1rem;" class="w-100 btn btn-lg btn-primary" type="submit">SIGN UP</button>
                 </form>
                 <div class="col-3"></div>
