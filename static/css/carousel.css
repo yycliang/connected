@@ -1,11 +1,12 @@
-/* carousel.css GLOBAL STYLES
+/* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&family=Poppins&display=swap');
 body {
   padding-top: 3rem;
   /* padding-bottom: 3rem; */
   color: #5a5a5a;
+    font-family: 'Poppins', sans-serif !important;
 }
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
@@ -20,7 +21,7 @@ body {
 }
 /* Declare heights because of positioning of img element */
 .carousel-item {
-  height: 45rem;
+  height: 37rem;
 }
 .carousel-item > img {
   position: absolute;
@@ -46,6 +47,9 @@ body {
   margin-left: .75rem;
 }
 /* rtl:end:ignore */
+#firstsection{
+    background-color: #fcf3ed;
+}
 /* Featurettes
 ------------------------- */
 .featurette-divider {
@@ -58,19 +62,17 @@ body {
   /* rtl:remove */
   letter-spacing: -.05rem;
 }
-h1 {
+#titletitle1,  #titletitle2, #titletitle3{
   color: black;
   -webkit-text-fill-color: black; /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 5px;
+  -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: #e3e0cc;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
+  font-size: 100px !important;
 }
 .text-muted{
     font-size: xx-large;
-}
-#titletitle{
-    font-size: 150px !important;
 }
 .btn-primary{
     background-color: #cb997e;
