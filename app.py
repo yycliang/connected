@@ -56,14 +56,19 @@ def dashboard():
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
-    collections = mongo.db.Postings
     postings = list(collections.find({}))
+    for i in range(len(postings) - 1):
+        postingTitle = postings[i]["title"]
+        if collections2.find({"user": session['username'], "title": postingTitle}):
+            postings.pop(i)
+            i -= 1
     if request.method == "POST":
         post_title = request.form['post_title']
+        post_company = request.form['post_company']
         post_description = request.form['post_description']
         image_link = request.form['image_link']
         date = request.form['date']
-        collections.insert({'title': post_title, 'description': post_description, 'image': image_link, 'date': date})
+        collections.insert({'title': post_title, 'company': post_company, 'description': post_description, 'image': image_link, 'date': date})
         return redirect(url_for('postings'))
     return render_template('postings.html', postings = postings)
 
@@ -72,10 +77,9 @@ def postings():
 def users():
     usersCol = mongo.db.Users
     users = list(usersCol.find({}))
-    if request.method == 'GET':
-        return render_template('users.html', users = users)
+    return render_template('users.html', users = users)
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST', 'GET', 'ET'])
 def login():
     if request.method == 'POST':
         login_user = collections3.find_one({'email': request.form['username']})
@@ -84,17 +88,12 @@ def login():
         if login_user:
             if request.form['password'] == login_user['password']:
                 session['username'] = request.form['username']
-                users = list(collections3.find({"email": session['username']}))
-                dashboard = list(collections2.find({"user": session['username']}))
-                saved = list(collections2.find({"status":"saved", "user": session['username']}))
-                progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
-                completed = list(collections2.find({"status":"completed", "user": session['username']}))
-                return render_template('dashboard.html', dashboard = dashboard, saved = saved, progress = progress, completed = completed, users = users)
+                return redirect(url_for('dashboard'))
         return render_template('login.html', error = 'Invalid username/password combination. Try again', time=datetime.now())
     elif request.method == 'GET':
         return render_template('login.html', time=datetime.now())
 
-@app.route('/signup', methods=['POST', 'GET'])
+@app.route('/signup', methods=['POST', 'GET', 'ET'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html', time=datetime.now())
@@ -104,7 +103,7 @@ def signup():
         if existing_user is None:
             users.insert({
                 'fullname': request.form['fullname'], 
-                'username': request.form['username'], 
+                'email': request.form['username'], 
                 'location': request.form['location'],             
                 'major': request.form['major'], 
                 'github': request.form['github'], 
@@ -129,4 +128,29 @@ def change():
             {"_id":ObjectId(id)},
             {"$set":{"status": status}}
             )
+
     return redirect(url_for('dashboard'))
+
+@app.route('/progress/<_id>', methods=['GET','POST','ET'])
+def progressid(_id):
+    indexes = []
+    checklist = []
+    if request.method == "POST":
+        checklist = request.form.getlist('jobcheckbox')
+    collections2.update_one(
+            {"_id":ObjectId(_id)},
+            {"$set":{"checklist": checklist}}
+            )
+    check = list(collections2.find({"_id":  ObjectId(_id)}, {"_id": 0, "checklist": 1}))[0]["checklist"]
+    indexes.extend([
+        check.count("requirements"),
+        check.count("resume"), 
+        check.count("coverLetter"),
+        check.count("doubleCheck"), 
+        check.count("apply"), 
+        check.count("call"),
+        check.count("interview"), 
+        check.count("followUp")
+        ])
+    job = list(collections2.find({"_id":  ObjectId(_id), "user": session['username']}))
+    return render_template('progressid.html', job = job, indexes = indexes)
