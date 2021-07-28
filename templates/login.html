@@ -54,6 +54,9 @@
                     <label for="floatingPassword">Password</label>
                     </div>
                     <p>No account? <a href="/signup">SIGN UP</a></p>
+                    {% if error %}
+                        <p id="error"> {{ error }} </p>
+                    {% endif %}
                     <button style="margin: 1rem;" class="w-100 btn btn-lg btn-primary" type="submit" value="submit">LOG IN</button>
                 </form>
             </div>
