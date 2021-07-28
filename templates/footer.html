@@ -1,4 +1,4 @@
-<footer class="page-footer font-small blue pt-4 bg-dark text-white">
+<footer id="postings" name="postings"  class="page-footer font-small blue pt-4 bg-dark text-white">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">
@@ -26,11 +26,11 @@
 
             <ul class="list-unstyled">
             <li>
-                <a href="{{ url_for('index') }}">Home</a>
+                <a class="text-white" href="{{ url_for('index') }}">Home</a>
             </li>
           
             <li>
-                <a href="{{ url_for('postings') }}">Postings</a>
+                <a  class="text-white" href="{{ url_for('postings') }}">Postings</a>
             </li>
           
             </ul>
@@ -43,10 +43,10 @@
 
             <ul class="list-unstyled">
             <li>
-                <a href="{{ url_for('users') }}">Users</a>
+                <a  class="text-white" href="{{ url_for('users') }}">Users</a>
             </li>
             <li>
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a  class="text-white" href="{{ url_for('dashboard') }}">Dashboard</a>
             </li>
             </ul>
 
@@ -57,7 +57,7 @@
     </div>
 
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
-        <a href="{{ url_for('index') }}">Connected</a>
+        <a  class="text-white" href="{{ url_for('index') }}">Connected</a>
     </div>
     <!-- Copyright -->
 
