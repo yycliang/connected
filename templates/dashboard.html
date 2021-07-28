@@ -26,6 +26,9 @@
           font-size: 3.5rem;
         }
       }
+      .form-control:disabled, .form-control[readonly]{
+          background-color: white;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -48,11 +51,11 @@
                                 <div class="d-flex flex-column align-items-center text-center">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                                     <div class="mt-3">
-                                    <h4>{{ user.fullname }}</h4>
-                                    <p class="text-secondary mb-1"><a class="text-dark" href="{{ user.github }}">{{ user.github }}</a></p>
-                                    <p class="text-secondary mb-1">Major: {{ user.major }}</p>
-                                    <p class="font-size-sm">{{ user.location }}</p>
-                                    <button class="btn btn-outline-dark"><a class="text-dark" href="mailto:{{ user.email }}">Email</a></button>
+                                        <h4>{{ user.fullname }}</h4>
+                                        <p class="text-secondary mb-1"><a class="text-dark" href="{{ user.github }}">{{ user.github }}</a></p>
+                                        <p class="text-secondary mb-1">Major: {{ user.major }}</p>
+                                        <p class="font-size-sm">{{ user.location }}</p>
+                                        <button class="btn btn-outline-dark"><a class="text-dark" href="mailto:{{ user.email }}">Email</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -61,71 +64,35 @@
                     <div class="col-md-8">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                    <h6 class="mb-0">Full Name</h6>
+                                <form class="col" action="/updateUser" method="POST">
+                                    <h1 style="margin: 1rem;" class="h3 mb-3 fw-normal">Your Info</h1>
+                                    <div style="margin: 1rem;" class="form-group">
+                                        <label for="updateUser">Full Name</label>
+                                        <input type="text" class="form-control whitebg" name="newfullname" id="fullnameText" value="{{ user.fullname }}" readonly>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <p id="fullnameText">
-                                            {{ user.fullname }}
-                                        </p>
+                                    <!-- <div style="margin: 1rem;" class="form-group">
+                                        <label for="updateUser">Email address</label>
+                                        <input type="email" class="form-control" name="newusername" id="emailText" value="{{ user.email }}" readonly>
+                                    </div> -->
+                                    <div style="margin: 1rem;" class="form-group">
+                                        <label for="updateUser">City, State, and Country</label>
+                                        <input type="text" class="form-control" name="newlocation" id="locationText" value="{{ user.location }}" readonly>
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                    <h6 class="mb-0">Email</h6>
+                                    <div style="margin: 1rem;" class="form-group">
+                                        <label for="updateUser">College Major</label>
+                                        <input type="text" class="form-control" name="newmajor" id="majorText" value="{{ user.major }}" readonly>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <p id="emailText">
-                                            {{ user.email }}
-                                        </p>
+                                    <div style="margin: 1rem;" class="form-group">
+                                        <label for="updateUser">Github Link</label>
+                                        <input type="text" class="form-control" name="newgithub" id="githubText" value="{{ user.github }}" readonly>          
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                    <h6 class="mb-0">City, State, and Country</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <p id="locationText">
-                                            {{ user.location }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                    <h6 class="mb-0">College Major</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary ">
-                                        <p id="majorText">
-                                            {{ user.major }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                    <h6 class="mb-0">Github Link</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <p id="githubText">
-                                            {{ user.github }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col" >
-                                        <a id="editButton" class="btn btn-outline-dark " target="__blank">Edit</a>
-                                        <a id="saveButton" class="btn btn-outline-dark " target="__blank">Save</a>
-                                    </div>
-                                </div>
+                                    <a style="margin-left: 1rem;" id="editButton" class="btn btn-outline-dark">Edit</a>
+                                    <input type="submit" value="Save" id="saveButton" class="btn btn-outline-dark">
+                                </form>
                             </div>
                         </div>
-                    {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             <!-- the formatted one but not correct content -->
