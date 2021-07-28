@@ -49,10 +49,10 @@
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                                     <div class="mt-3">
                                     <h4>{{ user.fullname }}</h4>
-                                    <p class="text-secondary mb-1">{{ user.github }}</p>
+                                    <p class="text-secondary mb-1"><a class="text-dark" href="{{ user.github }}">{{ user.github }}</a></p>
                                     <p class="text-secondary mb-1">Major: {{ user.major }}</p>
                                     <p class="font-size-sm">{{ user.location }}</p>
-                                    <button class="btn btn-outline-primary"><a href="mailto:{{ user.email }}">Email</a></button>
+                                    <button class="btn btn-outline-dark"><a class="text-dark" href="mailto:{{ user.email }}">Email</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,9 @@
                                     <h6 class="mb-0">Full Name</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                    {{ user.fullname }}
+                                        <p id="fullnameText">
+                                            {{ user.fullname }}
+                                        </p>
                                     </div>
                                 </div>
                                 <hr>
@@ -75,7 +77,9 @@
                                     <h6 class="mb-0">Email</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                    {{ user.email }}
+                                        <p id="emailText">
+                                            {{ user.email }}
+                                        </p>
                                     </div>
                                 </div>
                                 <hr>
@@ -84,7 +88,9 @@
                                     <h6 class="mb-0">City, State, and Country</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                    {{ user.location }}
+                                        <p id="locationText">
+                                            {{ user.location }}
+                                        </p>
                                     </div>
                                 </div>
                                 <hr>
@@ -92,23 +98,28 @@
                                     <div class="col-sm-3">
                                     <h6 class="mb-0">College Major</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary">
-                                    {{ user.major }}
+                                    <div class="col-sm-9 text-secondary ">
+                                        <p id="majorText">
+                                            {{ user.major }}
+                                        </p>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                    <h6 class="mb-0">Gitub Username</h6>
+                                    <h6 class="mb-0">Github Link</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                    {{ user.github }}
+                                        <p id="githubText">
+                                            {{ user.github }}
+                                        </p>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank" href="#">Edit</a>
+                                    <div class="col" >
+                                        <a id="editButton" class="btn btn-outline-dark " target="__blank">Edit</a>
+                                        <a id="saveButton" class="btn btn-outline-dark " target="__blank">Save</a>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +136,7 @@
                         <div class="col-4">
                             {% for saved in saved %}
                             <div class="row">
-                                <div class="col">
+                                <div class="col-4">
                                     <div class="card shadow-sm">
                                         <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ saved.image }}"/>
                                         <div class="card-body">

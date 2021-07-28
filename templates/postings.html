@@ -35,9 +35,19 @@
                 <h1 class="fw-light">POSTINGS</h1>
                 <p class="lead text-muted">Explore different job offers or create your own. From architecture and engineering to science and technology, we've got all sorts of job offerings for you!</p>
                 <!-- Button trigger modal -->
-                <button type="button" id = "createbutton" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-                CREATE A JOB POSTING!
-                </button>
+                <div class="row">
+                    <div class="col">
+                        <button type="button" id = "createbutton" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                        CREATE A JOB!
+                        </button>
+                    </div>
+                    <div class="col">             
+                        <button type="button" class="btn btn-primary" >
+                            <a href="#postings" class="text-white" >VIEW POSTINGS!</a>
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Modal -->
                 <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -83,32 +93,32 @@
         </div>
     </section>
     <div class="album py-5 bg-light">
-        <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            
+        <div class="container" >
+            <h3>Postings</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for posting in postings %}
                 <div class="col">
-            <div class="card shadow-sm">
-                <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ posting.image }}"/>
-                <div class="card-body">
-                    <h5>{{posting.title}}</h5>
-                    <p class="card-text">{{posting.company}} - {{posting.description}}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <form action="/dashboard" method="POST">
-                                <input type="hidden" name = "objectID" value = "{{posting._id}}"></input>
-                                <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save</button>
-                            </form>
-                        
+                    <div class="card shadow-sm">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ posting.image }}"/>
+                        <div class="card-body">
+                            <h5>{{posting.title}}</h5>
+                            <p class="card-text">{{posting.company}} - {{posting.description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <form action="/dashboard" method="POST">
+                                        <input type="hidden" name = "objectID" value = "{{posting._id}}"></input>
+                                        <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save</button>
+                                    </form>
+                                
+                                </div>
+                                <small class="text-muted">{{ posting.date }}</small>
+                            </div>
                         </div>
-                        <small class="text-muted">{{ posting.date }}</small>
                     </div>
                 </div>
+                {% endfor %}
+                </div>
             </div>
-            </div>
-            {% endfor %}
-            </div>
-        </div>
         </div>
     </div>
     <!-- Footer -->
