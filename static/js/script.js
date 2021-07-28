@@ -9,7 +9,6 @@ pages.forEach((page)=>{
 )
 
 const fullnameText = document.getElementById("fullnameText");
-const emailText = document.getElementById("emailText");
 const locationText = document.getElementById("locationText");
 const majorText = document.getElementById("majorText");
 const githubText = document.getElementById("githubText");
@@ -18,28 +17,24 @@ const saveButton = document.getElementById("saveButton");
 
 editButton.addEventListener("click", function() {
   console.log("edit button is being clicked")
-  fullnameText.contentEditable = true;
+  fullnameText.readOnly = false;
   fullnameText.style.backgroundColor = "#dddbdb";
-  emailText.contentEditable = true;
-  emailText.style.backgroundColor = "#dddbdb";
-  locationText.contentEditable = true;
+  locationText.readOnly = false;
   locationText.style.backgroundColor = "#dddbdb";
-  majorText.contentEditable = true;
+  majorText.readOnly = false;
   majorText.style.backgroundColor = "#dddbdb";
-  githubText.contentEditable = true;
+  githubText.readOnly = false;
   githubText.style.backgroundColor = "#dddbdb";
 } );
 
 saveButton.addEventListener("click", function() {
   console.log("save button is being clicked")
-  fullnameText.contentEditable = false;
+  fullnameText.readOnly = true;
   fullnameText.style.backgroundColor = "white";
-  emailText.contentEditable = false;
-  emailText.style.backgroundColor = "white";
-  locationText.contentEditable = false;
+  locationText.readOnly = true;
   locationText.style.backgroundColor = "white";
-  majorText.contentEditable = false;
+  majorText.readOnly = true;
   majorText.style.backgroundColor = "white";
-  githubText.contentEditable = false;
+  githubText.readOnly = true;
   githubText.style.backgroundColor = "white";
 } )

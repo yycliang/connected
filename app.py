@@ -130,13 +130,34 @@ def change():
         status = request.form['status']
         collections2.update_one(
             {"_id":ObjectId(id)},
-            {"$set":{"status": status}}
+            {"$set":
+                {"status": status}
+            }
             )
         if status == "inprogress":
             collections2.update_one(
             {"_id":ObjectId(id)},
-            {"$set":{"checklist": []}}
+            {"$set":
+                {"checklist": []}
+                }
             )
+    return redirect(url_for('dashboard'))
+
+@app.route('/updateUser', methods=['GET', 'POST', 'ET'])
+def updateUser():
+    users = mongo.db.Users 
+    if request.method == "POST":
+        users.update_one(
+            {"email": session['username']},
+            {"$set":
+                {
+                'fullname': request.form['newfullname'], 
+                'location': request.form['newlocation'],
+                'major':  request.form['newmajor'], 
+                'github':  request.form['newgithub'],
+                }
+            }
+        )
     return redirect(url_for('dashboard'))
 
 @app.route('/progress/<_id>', methods=['GET','POST','ET'])
