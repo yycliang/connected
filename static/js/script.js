@@ -12,6 +12,7 @@ const fullnameText = document.getElementById("fullnameText");
 const locationText = document.getElementById("locationText");
 const majorText = document.getElementById("majorText");
 const githubText = document.getElementById("githubText");
+const pictureText = document.getElementById("pictureText");
 const editButton = document.getElementById("editButton");
 const saveButton = document.getElementById("saveButton");
 
@@ -25,6 +26,8 @@ editButton.addEventListener("click", function() {
   majorText.style.backgroundColor = "#dddbdb";
   githubText.readOnly = false;
   githubText.style.backgroundColor = "#dddbdb";
+  pictureText.readOnly = false;
+  pictureText.style.backgroundColor = "#dddbdb";
 } );
 
 saveButton.addEventListener("click", function() {
