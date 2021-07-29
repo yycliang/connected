@@ -72,9 +72,13 @@ def postings():
         post_title = request.form['post_title']
         post_company = request.form['post_company']
         post_description = request.form['post_description']
-        image_link = request.form['image_link']
+        if request.form['image_link'] == "":
+            image_link = "https://cdn.pixabay.com/photo/2014/05/02/21/50/laptop-336378__480.jpg"
+        else:
+            image_link = request.form['image_link']
+        link = request.form['link']
         date = request.form['date']
-        collections.insert({'title': post_title, 'company': post_company, 'description': post_description, 'image': image_link, 'date': date})
+        collections.insert({'title': post_title, 'company': post_company, 'description': post_description, 'image': image_link, "link": link, 'date': date})
         return redirect(url_for('postings'))
     if session['username'] == "":
         return render_template('signup.html', loggedIn = False)
