@@ -86,7 +86,7 @@
                                         <label for="updateUser">Github Link</label>
                                         <input type="text" class="form-control" name="newgithub" id="githubText" value="{{ user.github }}" readonly>          
                                     </div>
-                                    <div style="margin: 1rem;" class="form-floating">
+                                    <div style="margin: 1rem;" class="form-group">
                                         <label for="floatingInput">Picture Link</label>
                                         <input type="text" class="form-control" name="newpicture" id="pictureText" value="{{ user.picture }}" readonly>
                                     </div>
@@ -208,9 +208,9 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-column align-items-center text-center">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                            <img src="{{ follow.picture }}" alt="Admin" class="rounded-circle" width="150">
                                             <div class="mt-3">
-                                            <h4><a class="text-dark" href="/user/{{follow.email}}">{{ follow.fullname }}</a></h4>
+                                            <h4><a class="text-dark" href="/user/{{ follow.email }}">{{ follow.fullname }}</a></h4>
                                             <p class="text-secondary mb-1"><a class="text-dark" href="{{ follow.github }}">{{ follow.github }}</a></p>
                                             <p class="text-secondary mb-1"> Major: {{ follow.major }}</p>
                                             <p class="font-size-sm">{{ follow.location }}</p>
