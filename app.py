@@ -42,12 +42,11 @@ collections4 = mongo.db.Following
 #         return render_template('index.html', loggedIn = True)
 @app.route('/index')
 def index():
-    # if session['username'] == "":
-    #     return render_template('index.html', loggedIn = False)
-    # else:
-    #     return render_template('index.html', loggedIn = True)
+    if session['username'] == "":
+        return render_template('index.html', loggedIn = False)
+    else:
+        return render_template('index.html', loggedIn = True)
     return render_template('index.html')
-
 
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
@@ -71,7 +70,9 @@ def dashboard():
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     if session['username'] == "":
-        return redirect(url_for('login'))
+        return render_template('signup.html', loggedIn = False)
+    else:
+        return render_template('postings.html', loggedIn = True)
     postings = list(collections.find({}))
     dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "postingID": 1}))
     dash = []
@@ -88,9 +89,12 @@ def postings():
         return redirect(url_for('postings'))
     return render_template('postings.html', postings = postings)
 
-
 @app.route('/users')
 def users():
+    if session['username'] == "":
+        return render_template('signup.html', loggedIn = False)
+    else:
+        return render_template('users.html', loggedIn = True)
     currentUser = session['username']
     inSession = (session['username'] != "")
     users = list(collections3.find({}))
@@ -114,13 +118,18 @@ def login():
                 return redirect(url_for('dashboard'))
         return render_template('login.html', error = 'Invalid username/password combination. Try again', time=datetime.now())
     elif request.method == 'GET':
-        return render_template('login.html', time=datetime.now())
-
+        if session['username'] == "":
+            return render_template('login.html', loggedIn = False)
+        else:
+            return render_template('dashboard.html', loggedIn = True, time=datetime.now())
 
 @app.route('/signup', methods=['POST', 'GET', 'ET'])
 def signup():
     if request.method == 'GET':
-        return render_template('signup.html', time=datetime.now())
+        if session['username'] == "":
+            return render_template('signup.html', loggedIn = False)
+        else:
+            return render_template('dashboard.html', loggedIn = True, time=datetime.now())
     elif request.method == 'POST':
         users = mongo.db.Users
         existing_user = users.find_one({'email' : request.form['username']})
@@ -137,13 +146,11 @@ def signup():
             return redirect('/users')
         return render_template('signup.html', time=datetime.now(), error = 'User already exists! Try logging in instead.')
 
-
 @app.route('/logout')
 def logout():
     session.clear()
     session['username'] = ""
     return redirect('/')
-
 
 @app.route('/change', methods=['GET','POST','ET'])
 def change():
