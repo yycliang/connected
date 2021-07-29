@@ -10,6 +10,7 @@ from flask_pymongo import ObjectId
 from datetime import datetime
 from flask import session, url_for
 import os
+from similar_text import similar_text
 
 
 # -- Initialization section --
@@ -28,37 +29,46 @@ mongo = PyMongo(app)
 collections = mongo.db.Postings
 collections2 = mongo.db.Dashboard
 collections3 = mongo.db.Users
+collections4 = mongo.db.Following
 
 # loggedIn = False
 # -- Routes section --
 # INDEX
 
 @app.route('/')
+def start():
+    if session['username'] == "":
+        return redirect(url_for('login'))
+    return render_template('index.html')
+
+
 @app.route('/index')
 def index():
-    session['username'] = ""
     return render_template('index.html')
 
 
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
     if session['username'] == "":
-        redirect(url_for('login'))
+        return redirect(url_for('login'))
     if request.method == "POST":
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
         id2 = posting[0]
         collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "interested", "postingID": id}})
     dashboard = list(collections2.find({"user": session['username']}))
+    following = list(collections4.find({"user": session['username']}))
     interested = list(collections2.find({"status":"interested", "user": session['username']}))
     progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
     completed = list(collections2.find({"status":"completed", "user": session['username']}))
     users = list(collections3.find({"email": session['username']}))
-    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users)
+    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users, following = following)
         
 
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
+    if session['username'] == "":
+        return redirect(url_for('login'))
     postings = list(collections.find({}))
     dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "postingID": 1}))
     dash = []
@@ -76,11 +86,18 @@ def postings():
     return render_template('postings.html', postings = postings)
 
 
-@app.route('/users', methods=['GET','POST', 'ET'])
+@app.route('/users')
 def users():
-    usersCol = mongo.db.Users
-    users = list(usersCol.find({}))
-    return render_template('users.html', users = users)
+    currentUser = session['username']
+    inSession = (session['username'] != "")
+    users = list(collections3.find({}))
+    following = list(collections4.find({"user": session['username']}, {"_id": 0, "fullname": 1}))
+    dash = []
+    for i in following:
+        dash.append(i["fullname"])
+    users = [elem for elem in users if elem["fullname"] not in dash]
+    return render_template('users.html', users = users, currentUser = currentUser, inSession = inSession)
+
 
 @app.route('/login', methods=['POST', 'GET', 'ET'])
 def login():
@@ -95,6 +112,7 @@ def login():
         return render_template('login.html', error = 'Invalid username/password combination. Try again', time=datetime.now())
     elif request.method == 'GET':
         return render_template('login.html', time=datetime.now())
+
 
 @app.route('/signup', methods=['POST', 'GET', 'ET'])
 def signup():
@@ -116,11 +134,13 @@ def signup():
             return redirect('/users')
         return render_template('signup.html', time=datetime.now(), error = 'User already exists! Try logging in instead.')
 
+
 @app.route('/logout')
 def logout():
     session.clear()
     session['username'] = ""
     return redirect('/')
+
 
 @app.route('/change', methods=['GET','POST','ET'])
 def change():
@@ -143,6 +163,7 @@ def change():
             )
     return redirect(url_for('dashboard'))
 
+
 @app.route('/updateUser', methods=['GET', 'POST', 'ET'])
 def updateUser():
     users = mongo.db.Users 
@@ -159,6 +180,7 @@ def updateUser():
             }
         )
     return redirect(url_for('dashboard'))
+
 
 @app.route('/progress/<_id>', methods=['GET','POST','ET'])
 def progressid(_id):
@@ -183,3 +205,53 @@ def progressid(_id):
         ])
     job = list(collections2.find({"_id":  ObjectId(_id), "user": session['username']}))
     return render_template('progressid.html', job = job, indexes = indexes)
+
+
+@app.route('/search', methods=['GET','POST','ET'])
+def search():
+    users = list(collections3.find({}))
+    if request.method == "POST":
+        userSearch = request.form['userSearch'].title()
+        if userSearch == "":
+            return redirect('/users')
+        users = list(collections3.find({}))
+        userMatches = []
+        for i in users:
+            if similar_text(userSearch, i["fullname"]) > 50:
+                userMatches.append(i)        
+        if len(userMatches) == 0:
+            users = list(collections3.find({}))
+            return render_template('users.html', error = "No Results Found. Try Again.", users = users)
+        return render_template('users.html', users = userMatches) 
+    return render_template('users.html', users = users)
+
+
+@app.route('/follow', methods=['GET','POST','ET'])
+def follow():
+    if request.method == "POST":
+        id = request.form['objectID']
+        following = collections4.insert(collections3.find({"_id":ObjectId(id)}, {"_id": 0}))
+        id2 = following[0]
+        collections4.update_one({"_id":id2},{"$set":{"user": session['username']}})
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/unfollow', methods=['GET','POST','ET'])
+def unfollow():
+    if request.method == "POST":
+        id = request.form['objectID']
+        collections4.delete_one({"_id":ObjectId(id)})
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/user/<email>', methods=['GET','POST','ET'])
+def user(email):
+    userPostings = list(collections2.find({"user": email}))
+    currentUserPostings = list(collections2.find({"user": session['username']}))
+    dash = []
+    for i in currentUserPostings:
+        dash.append(i["postingID"])
+    userPostings = [elem for elem in userPostings if elem["postingID"] not in dash]
+    currentUserPostings = [elem for elem in userPostings if elem["postingID"] in dash]
+    users = list(collections3.find({"email": email}))
+    return render_template('eachUser.html', userPostings = userPostings, currentUserPostings = currentUserPostings, users = users)

@@ -40,6 +40,10 @@
                     <p class="lead text-muted">Explore different job offers or create your own. From architecture and engineering to science and technology, we've got all sorts of job offerings for you!</p>
                     <br>
                     <hr>
+                    {% if error %}
+                        <p id="error"> {{ error }} </p>
+                        <br>
+                    {% endif %}
                 </div>
             </div>
         </section>
@@ -57,7 +61,19 @@
                             <p class="text-secondary mb-1"><a class="text-dark" href="{{ user.github }}">{{ user.github }}</a></p>
                             <p class="text-secondary mb-1"> Major: {{ user.major }}</p>
                             <p class="font-size-sm">{{ user.location }}</p>
-                            <button class="btn btn-outline-dark"><a class="text-dark" href="mailto:{{ user.email }}">Email</a></button>
+                            <!-- {% if user.email %}
+                                <button class="btn btn-outline-secondary"><a class="text-dark" href="mailto:{{ user.email }}">EMAIL</a></button>
+                            {% endif %} -->
+                            {% if user.email != currentUser %}
+                                {% if inSession %}
+                                <div class="btn-group">
+                                    <form action="/follow" method="POST">
+                                        <input type="hidden" name = "objectID" value = "{{user._id}}"></input>
+                                        <button type="submit" value = "submit" class="btn btn-outline-secondary">FOLLOW</button>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            {% endif %}
                             </div>
                         </div>
                     </div>
