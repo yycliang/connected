@@ -104,8 +104,9 @@
                 <div class="container p-2">
                     <h3 class="text-center p-2">TRACK YOUR APPLICATION PROCESS</h3>
                     <br>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
                         <div class="col-4">
+                            <h3>Interested</h3>
                             {% for interested in interested %}
                             <div class="row">
                                 <div class="col">
@@ -136,6 +137,7 @@
                             {% endfor %}
                         </div>
                         <div class="col-4">
+                            <h3>In Progress</h3>
                             {% for progress in progress %}
                             <div class="row">
                                 <div class="col">
@@ -166,6 +168,7 @@
                             {% endfor %}
                         </div>
                         <div class="col-4">
+                            <h3>Completed</h3>
                             {% for completed in completed %}
                             <div class="row">
                                 <div class="col">

@@ -33,6 +33,20 @@
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">POSTINGS</h1>
+                 <!-- <div class="accordion" id="fda">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" >
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fdsa" aria-expanded="false" aria-controls="#fdsa">
+                            Description
+                        </button>
+                        </h2>
+                        <div id="fdsa" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                        </div>
+                    </div>
+                </div> -->
                 <p class="lead text-muted">Explore different job offers or create your own. From architecture and engineering to science and technology, we've got all sorts of job offerings for you!</p>
                 <!-- Button trigger modal -->
                 <div class="row">
@@ -88,7 +102,6 @@
                         </div>
                         </form>
                     </div>
-                    
                     </div>
                 </div>
                 </div>
@@ -110,8 +123,22 @@
                         <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ posting.image }}"/>
                         <div class="card-body">
                             <h5>{{posting.title}}</h5>
-                            <p class="card-text">{{posting.company}} - {{posting.description}}</p>
-                            <p class="card-text"><a class="text-dark" href="{{posting.link}}">APPLY</a></p>
+                            <p class="card-text">{{posting.company}}</p>
+                            <div class="accordion" id="accordionExample{{posting._id}}">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" >
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{posting._id}}" aria-expanded="false" aria-controls="collapse{{posting._id}}">
+                                        Description
+                                    </button>
+                                    </h2>
+                                    <div id="collapse{{posting._id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        {{posting.description}}
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button href = "{{posting.link}}" class="btn btn-sm btn-outline-secondary">Apply</button>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <form action="/dashboard" method="POST">
@@ -119,7 +146,7 @@
                                         <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save to Dashboard</button>
                                     </form>
                                 </div>
-                                <p class="text-muted">{{ posting.date }}</p>
+                                <p >{{ posting.date }}</p>
                             </div>
                         </div>
                     </div>
@@ -150,6 +177,12 @@
             reload = location.reload();
             myModal.style.display = "none";
         });
+        function function1(id){
+            return id+"a";
+        }
+        function function2(id){
+            return "#" + id+"a";
+        }
     </script>
 </body>
 </html>
