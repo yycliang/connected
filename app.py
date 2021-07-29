@@ -36,14 +36,10 @@ collections4 = mongo.db.Following
 # INDEX
 
 @app.route('/')
-def start():
-    if session['username'] == "":
-        return redirect(url_for('login'))
-    return render_template('index.html')
-
-
 @app.route('/index')
 def index():
+    if session['username'] == "":
+        return redirect(url_for('login'))
     return render_template('index.html')
 
 
@@ -246,12 +242,33 @@ def unfollow():
 
 @app.route('/user/<email>', methods=['GET','POST','ET'])
 def user(email):
+    if session['username'] == "":
+        return redirect("/")
     userPostings = list(collections2.find({"user": email}))
-    currentUserPostings = list(collections2.find({"user": session['username']}))
+    current = list(collections2.find({"user": session['username']}))
     dash = []
-    for i in currentUserPostings:
+    for i in current:
         dash.append(i["postingID"])
+    currentUserPostings = []
+    for posting in userPostings:
+        if collections2.find({"user": session['username'], "postingID": posting["postingID"]}):
+            currentUserPostings.append(list(collections2.find({"user": session['username'], "postingID": posting["postingID"]}))[0])
     userPostings = [elem for elem in userPostings if elem["postingID"] not in dash]
-    currentUserPostings = [elem for elem in userPostings if elem["postingID"] in dash]
     users = list(collections3.find({"email": email}))
     return render_template('eachUser.html', userPostings = userPostings, currentUserPostings = currentUserPostings, users = users)
+
+
+@app.route('/addFromUser', methods=['GET','POST','ET'])
+def addFromUser():
+    if request.method == "POST":
+        id = request.form['objectID']
+        posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
+        id2 = posting[0]
+        collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "interested", "postingID": id}})
+    dashboard = list(collections2.find({"user": session['username']}))
+    following = list(collections4.find({"user": session['username']}))
+    interested = list(collections2.find({"status":"interested", "user": session['username']}))
+    progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
+    completed = list(collections2.find({"status":"completed", "user": session['username']}))
+    users = list(collections3.find({"email": session['username']}))
+    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users, following = following)

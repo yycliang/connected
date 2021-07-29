@@ -78,8 +78,8 @@
                                 <p class="card-text">{{userPosting.company}} - {{userPosting.description}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <form action="/dashboard" method="POST">
-                                            <input type="hidden" name = "objectID" value = "{{userPosting._id}}"></input>
+                                        <form action="/addFromUser" method="POST">
+                                            <input type="hidden" name = "objectID" value = "{{userPosting.postingID}}"></input>
                                             <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save to Dashboard</button>
                                         </form>
                                     </div>
