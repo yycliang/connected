@@ -138,15 +138,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <button href = "{{posting.link}}" class="btn btn-sm btn-outline-secondary">Apply</button>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-around align-items-center p-1" >
+                                <a href = "{{posting.link}}" role = "button" class="btn btn-sm btn-outline-secondary">Apply</a>
                                 <div class="btn-group">
                                     <form action="/dashboard" method="POST">
                                         <input type="hidden" name = "objectID" value = "{{posting._id}}"></input>
                                         <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save to Dashboard</button>
                                     </form>
                                 </div>
-                                <p >{{ posting.date }}</p>
+                                <p class = "pt-2">{{ posting.date }}</p>
                             </div>
                         </div>
                     </div>
