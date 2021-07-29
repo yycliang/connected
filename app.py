@@ -35,39 +35,31 @@ collections4 = mongo.db.Following
 # INDEX
 
 @app.route('/')
-def start():
-    if session['username'] == "":
-        return redirect(url_for('login'))
-    return render_template('index.html')
-
-
+# def start():
+#     if session['username'] == "":
+#         return render_template('index.html', loggedIn = False)
+#     else:
+#         return render_template('index.html', loggedIn = True)
 @app.route('/index')
 def index():
-<<<<<<< Updated upstream
-=======
-    # session['username'] = ""
     # if session['username'] == "":
-    #     loggedIn = false
-    #     return redirect(url_for('login'), loggedIn = loggedIn)
+    #     return render_template('index.html', loggedIn = False)
     # else:
-    #     loggedIn = true 
-    #     return render_template('index.html', loggedIn = loggedIn)
->>>>>>> Stashed changes
+    #     return render_template('index.html', loggedIn = True)
     return render_template('index.html')
 
 
 @app.route('/dashboard', methods=['GET','POST','ET'])
 def dashboard():
-<<<<<<< Updated upstream
-    if session['username'] == "":
-        return redirect(url_for('login'))
-=======
->>>>>>> Stashed changes
     if request.method == "POST":
         id = request.form['objectID']
         posting = collections2.insert(collections.find({"_id":ObjectId(id)}, {"_id": 0}))
         id2 = posting[0]
         collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "interested", "postingID": id}})
+    if session['username'] == "":
+        return render_template('signup.html', loggedIn = False)
+    else:
+        return render_template('dashboard.html', loggedIn = True)
     dashboard = list(collections2.find({"user": session['username']}))
     following = list(collections4.find({"user": session['username']}))
     interested = list(collections2.find({"status":"interested", "user": session['username']}))
@@ -76,7 +68,6 @@ def dashboard():
     users = list(collections3.find({"email": session['username']}))
     return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users, following = following)
         
-
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
     if session['username'] == "":
