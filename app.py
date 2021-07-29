@@ -132,7 +132,8 @@ def signup():
                 'email': request.form['username'], 
                 'location': request.form['location'],             
                 'major': request.form['major'], 
-                'github': request.form['github'], 
+                'github': request.form['github'],
+                'picture': request.form['picture'], 
                 'password': request.form['password'],
             })
             session['username'] = request.form['username']
@@ -179,6 +180,7 @@ def updateUser():
                 'location': request.form['newlocation'],
                 'major':  request.form['newmajor'], 
                 'github':  request.form['newgithub'],
+                'picture':  request.form['newpicture'],
                 }
             }
         )
