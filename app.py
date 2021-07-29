@@ -203,26 +203,28 @@ def progressid(_id):
         check.count("followUp")
         ])
     job = list(collections2.find({"_id":  ObjectId(_id), "user": session['username']}))
-    return render_template('progressid.html', job = job, indexes = indexes)
+    return render_template('progressid.html', job = job, indexes = indexes, loggedIn = True)
 
 
 @app.route('/search', methods=['GET','POST','ET'])
 def search():
-    users = list(collections3.find({}))
+    if session['username'] == "":
+        return redirect(url_for('login'))    
+    postings = list(collections.find({}))
     if request.method == "POST":
-        userSearch = request.form['userSearch'].title()
-        if userSearch == "":
-            return redirect('/users')
-        users = list(collections3.find({}))
-        userMatches = []
-        for i in users:
-            if similar_text(userSearch, i["fullname"]) > 50:
-                userMatches.append(i)        
-        if len(userMatches) == 0:
-            users = list(collections3.find({}))
-            return render_template('users.html', error = "No Results Found. Try Again.", users = users)
-        return render_template('users.html', users = userMatches) 
-    return render_template('users.html', users = users)
+        postingSearch = request.form['postingSearch'].title()
+        if postingSearch == "":
+            return redirect('/postings')
+        postings = list(collections.find({}))
+        postingMatches = []
+        for i in postings:
+            if similar_text(postingSearch, i["title"]) > 50:
+                postingMatches.append(i)        
+        if len(postingMatches) == 0:
+            postings = list(collections.find({}))
+            return render_template('postings.html', error = "No Results Found. Try Again.", postings = postings, loggedIn = True)
+        return render_template('postings.html', postings = postingMatches, loggedIn = True) 
+    return render_template('postings.html', postings = postings, loggedIn = True)
 
 
 @app.route('/follow', methods=['GET','POST','ET'])
@@ -258,7 +260,7 @@ def user(email):
             currentUserPostings.append(list(collections2.find({"user": session['username'], "postingID": posting["postingID"]}))[0])
     userPostings = [elem for elem in userPostings if elem["postingID"] not in dash]
     users = list(collections3.find({"email": email}))
-    return render_template('eachUser.html', userPostings = userPostings, currentUserPostings = currentUserPostings, users = users)
+    return render_template('eachUser.html', userPostings = userPostings, currentUserPostings = currentUserPostings, users = users, loggedIn = True)
 
 
 @app.route('/addFromUser', methods=['GET','POST','ET'])

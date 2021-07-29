@@ -41,7 +41,7 @@
     <!-- header -->
     {% include 'header.html' %}
     <main>
-        <div class="container p-3 text-center">
+        <div class="container p-3">
             <div class="main-body">
                 <div class="row gutters-sm">
                     {% for user in users %}
@@ -67,7 +67,7 @@
             <!-- the formatted one but not correct content -->
             <div class="album py-5 bg-light">
             <div class="container" >
-                <h3>User's Postings</h3>
+                <h3 class="text-center">User's Postings</h3>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {% for userPosting in userPostings %}
                     <div class="col">
