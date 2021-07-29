@@ -52,22 +52,16 @@ def dashboard():
         collections2.update_one({"_id":id2},{"$set":{"user": session['username'], "status": "interested", "postingID": id}})
     if session['username'] == "":
         return render_template('signup.html', loggedIn = False)
-    else:
-        return render_template('dashboard.html', loggedIn = True)
     dashboard = list(collections2.find({"user": session['username']}))
     following = list(collections4.find({"user": session['username']}))
     interested = list(collections2.find({"status":"interested", "user": session['username']}))
     progress = list(collections2.find({"status":"inprogress", "user": session['username']}))
     completed = list(collections2.find({"status":"completed", "user": session['username']}))
     users = list(collections3.find({"email": session['username']}))
-    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users, following = following)
+    return render_template('dashboard.html', dashboard = dashboard, interested = interested, progress = progress, completed = completed, users = users, following = following, loggedIn = True)
         
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
-    if session['username'] == "":
-        return render_template('signup.html', loggedIn = False)
-    else:
-        return render_template('postings.html', loggedIn = True)
     postings = list(collections.find({}))
     dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "postingID": 1}))
     dash = []
@@ -82,14 +76,12 @@ def postings():
         date = request.form['date']
         collections.insert({'title': post_title, 'company': post_company, 'description': post_description, 'image': image_link, 'date': date})
         return redirect(url_for('postings'))
-    return render_template('postings.html', postings = postings)
+    if session['username'] == "":
+        return render_template('signup.html', loggedIn = False)
+    return render_template('postings.html', postings = postings, loggedIn = True)
 
 @app.route('/users')
 def users():
-    if session['username'] == "":
-        return render_template('signup.html', loggedIn = False)
-    else:
-        return render_template('users.html', loggedIn = True)
     currentUser = session['username']
     inSession = (session['username'] != "")
     users = list(collections3.find({}))
@@ -98,7 +90,9 @@ def users():
     for i in following:
         dash.append(i["fullname"])
     users = [elem for elem in users if elem["fullname"] not in dash]
-    return render_template('users.html', users = users, currentUser = currentUser, inSession = inSession)
+    if session['username'] == "":
+        return render_template('signup.html', loggedIn = False)
+    return render_template('users.html', users = users, currentUser = currentUser, inSession = inSession, loggedIn = True)
 
 
 @app.route('/login', methods=['POST', 'GET', 'ET'])
