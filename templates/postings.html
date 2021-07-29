@@ -47,7 +47,6 @@
                         </button>
                     </div>
                 </div>
-                
                 <!-- Modal -->
                 <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -94,6 +93,10 @@
     </section>
     <div class="album py-5 bg-light">
         <div class="container" >
+            <br>
+            {% if error %}
+                    <p id="error"> {{ error }} </p>
+            {% endif %}
             <h3>Postings</h3>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% for posting in postings %}
