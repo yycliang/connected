@@ -29,9 +29,9 @@
                     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                 </li>
             </ul>
-            <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" action="/search" method="POST">
+                <input class="form-control me-2" type="search" placeholder="User's Name" aria-label="Search" name="userSearch">
+                <button class="btn btn-outline-success" type="submit" value="submit">SEARCH</button>
             </form>
         </div>
         </div>
