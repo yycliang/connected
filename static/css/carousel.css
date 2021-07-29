@@ -1,12 +1,12 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Poppins:wght@700&display=swap');
 body {
   padding-top: 3rem;
   /* padding-bottom: 3rem; */
   color: #5a5a5a;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: 'Lexend Deca', sans-serif !important;
 }
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
@@ -16,7 +16,7 @@ body {
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
-  bottom: 3rem;
+  bottom: 6rem;
   z-index: 10;
 }
 /* Declare heights because of positioning of img element */
@@ -70,13 +70,15 @@ body {
   font-family: 'Open Sans', sans-serif;
   text-align: center;
   font-size: 100px !important;
+  font-family: 'Poppins', sans-serif;
 }
 .text-muted{
     font-size: xx-large;
 }
 .btn-primary{
-    background-color: #cb997e;
-    border-color: #cb997e;
+    background-color: #94C4D2;
+    border-color: #8fd0e3;
+    color: black;
 }
 /* RESPONSIVE CSS
 -------------------------------------------------- */
