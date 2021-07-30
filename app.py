@@ -35,6 +35,10 @@ collections4 = mongo.db.Following
 # INDEX
 
 @app.route('/')
+def start():
+    session['username'] == ""
+    return render_template('index.html')
+
 @app.route('/index')
 def index():
     if session['username'] == "":
