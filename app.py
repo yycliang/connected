@@ -37,7 +37,7 @@ collections4 = mongo.db.Following
 @app.route('/')
 def start():
     session['username'] == ""
-    return render_template('index.html')
+    return render_template('index.html', loggedIn = False)
 
 @app.route('/index')
 def index():
