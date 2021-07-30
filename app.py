@@ -85,7 +85,7 @@ def postings():
         return render_template('signup.html', loggedIn = False)
     return render_template('postings.html', postings = postings, loggedIn = True)
 
-@app.route('/users')
+@app.route('/users', methods=['POST', 'GET', 'ET'])
 def users():
     currentUser = session['username']
     inSession = (session['username'] != "")
@@ -139,7 +139,7 @@ def signup():
             })
             session['username'] = request.form['username']
             return redirect('/users')
-        return render_template('signup.html', time=datetime.now(), error = 'User already exists! Try logging in instead.')
+        return render_template('signup.html', time=datetime.now(), error = 'User already exists! Try logging in instead.', loggedIn = False)
 
 @app.route('/logout')
 def logout():
