@@ -116,7 +116,7 @@
             {% endif %}
             <h3>JOB POSTINGS</h3>
             <br>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 text-center">
             {% for posting in postings %}
                 <div class="col">
                     <div class="card shadow-sm">
@@ -143,7 +143,7 @@
                                 <div class="btn-group">
                                     <form action="/dashboard" method="POST">
                                         <input type="hidden" name = "objectID" value = "{{posting._id}}"></input>
-                                        <button type="submit" value = "submit" class="btn btn-sm btn-outline-secondary">Save to Dashboard</button>
+                                        <button type="submit" value = "submit" class="text-dark" class="btn btn-sm btn-outline-secondary">Save to Dashboard</button>
                                     </form>
                                 </div>
                                 <p class = "pt-2">{{ posting.date }}</p>

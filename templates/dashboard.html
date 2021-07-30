@@ -114,10 +114,26 @@
                                         <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ interested.image }}"/>
                                         <div class="card-body">
                                         <h5>{{interested.title}}</h5>
-                                        <p class="card-text">{{interested.company}} - {{interested.description}}</p>
-                                        <p class="card-text"><a class="text-dark" href="{{interested.link}}">APPLY</a></p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <form action="/change" method="POST">
+                                        <p class="card-text">{{interested.company}}</p>
+                                        <p class = "card-text">{{ interested.date }}</p>
+                                        <div class="accordion" id="accordionExample{{interested._id}}">
+                                        <div class="accordion-item">
+                                        <h2 class="accordion-header" >
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{interested._id}}" aria-expanded="false" aria-controls="collapse{{interested._id}}">
+                                            Description
+                                        </button>
+                                        </h2>
+                                        <div id="collapse{{interested._id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            {{interested.description}}
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="d-flex justify-content-around align-items-center p-2" >
+                                            <a href = "{{interested.link}}" role = "button" class="btn btn-sm btn-outline-secondary">Apply</a>
+                                        </div>
+                                            <form action="/change" method="POST" class="p-1">
                                                 <input type="hidden" name = "objectID" value = "{{interested._id}}"></input>
                                                 <label for="status">Status:</label>
                                                 <select id="status" name="status">
@@ -125,15 +141,12 @@
                                                     <option value="inprogress">In Progress</option>
                                                     <option value="completed">Completed</option>
                                                 </select>
-                                                <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">Submit</button>
-                                            </form>
-                                            <p>{{ interested.date }}</p>
-                                        </div>
+                                                <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">SUBMIT</button>
+                                                </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br>
                             {% endfor %}
                         </div>
                         <div class="col-4">
@@ -144,27 +157,40 @@
                                     <div class="card shadow-sm">
                                         <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ progress.image }}"/>
                                         <div class="card-body">
-                                        <h5><a class="text-dark" href="/progress/{{progress._id}}">{{progress.title}}</a></h5>
-                                        <p class="card-text">{{progress.company}} - {{progress.description}}</p>
-                                        <p class="card-text"><a class="text-dark" href="{{progress.link}}">APPLY</a></p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <form action="/change" method="POST">
-                                                <input type="hidden" name = "objectID" value = "{{progress._id}}"></input>
-                                                <label for="status">Status:</label>
-                                                <select id="status" name="status">
-                                                    <option value="inprogress">In Progress</option>
-                                                    <option value="interested">Interested</option>
-                                                    <option value="completed">Completed</option>
-                                                </select>
-                                                <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">SUBMIT</button>
-                                            </form>
-                                            <small class="text-muted">{{ progress.date }}</small>
+                                        <h3><a class="text-dark" href="/progress/{{progress._id}}">{{progress.title}}</a></h3>
+                                        <p class="card-text">{{progress.company}}</p>
+                                        <p class = "card-text">{{ progress.date }}</p>
+                                        <div class="accordion" id="accordionExample{{progress._id}}">
+                                        <div class="accordion-item">
+                                        <h2 class="accordion-header" >
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{progress._id}}" aria-expanded="false" aria-controls="collapse{{progress._id}}">
+                                            Description
+                                        </button>
+                                        </h2>
+                                        <div id="collapse{{progress._id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            {{progress.description}}
                                         </div>
+                                        </div>
+                                        </div>
+                                            </div>
+                                            <div class="d-flex justify-content-around align-items-center p-1" >
+                                                <a href = "{{progress.link}}" role = "button" class="btn btn-sm btn-outline-secondary">Apply</a>
+                                            </div>
+                                                <form action="/change" method="POST" class="pt-2">
+                                                    <input type="hidden" name = "objectID" value = "{{progress._id}}"></input>
+                                                    <label for="status">Status:</label>
+                                                    <select id="status" name="status">
+                                                        <option value="inprogress">In Progress</option>
+                                                        <option value="interested">Interested</option>
+                                                        <option value="completed">Completed</option>
+                                                    </select>
+                                                    <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">SUBMIT</button>
+                                                </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br>
                             {% endfor %}
                         </div>
                         <div class="col-4">
@@ -176,26 +202,39 @@
                                         <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ completed.image }}"/>
                                         <div class="card-body">
                                         <h5>{{completed.title}}</h5>
-                                        <p class="card-text">{{completed.company}} - {{completed.description}}</p>
-                                        <p class="card-text"><a class="text-dark" href="{{completed.link}}">APPLY</a></p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <form action="/change" method="POST">
-                                                <input type="hidden" name = "objectID" value = "{{completed._id}}"></input>
-                                                <label for="status">Status:</label>
-                                                <select id="status" name="status">
-                                                    <option value="completed">Completed</option>
-                                                    <option value="interested">Interested</option>
-                                                    <option value="inprogress">In Progress</option>
-                                                </select>
-                                                <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">Submit</button>
-                                            </form>
-                                            <small class="text-muted">{{ completed.date }}</small>
+                                        <p class="card-text">{{completed.company}}</p>
+                                        <p class = "card-text">{{ completed.date }}</p>
+                                        <div class="accordion" id="accordionExample{{completed._id}}">
+                                        <div class="accordion-item">
+                                        <h2 class="accordion-header" >
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{completed._id}}" aria-expanded="false" aria-controls="collapse{{completed._id}}">
+                                            Description
+                                        </button>
+                                        </h2>
+                                        <div id="collapse{{completed._id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            {{completed.description}}
                                         </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="d-flex justify-content-around align-items-center p-1" >
+                                            <a href = "{{completed.link}}" role = "button" class="btn btn-sm btn-outline-secondary">Apply</a>
+                                        </div>
+                                        <form action="/change" method="POST" class="pt-2">
+                                            <input type="hidden" name = "objectID" value = "{{completed._id}}"></input>
+                                            <label for="status">Status:</label>
+                                            <select id="status" name="status">
+                                                <option value="completed">Completed</option>
+                                                <option value="inprogress">In Progress</option>
+                                                <option value="interested">Interested</option>
+                                            </select>
+                                            <button type="submit" value="submit" class="btn btn-sm btn-outline-secondary">SUBMIT</button>
+                                        </form>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <br>
+                            </div>                                
                             {% endfor %}
                         </div>
                     </div>

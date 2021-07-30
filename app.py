@@ -62,7 +62,8 @@ def dashboard():
         
 @app.route('/postings', methods=['GET','POST','ET'])
 def postings():
-    postings = list(collections.find({}))
+    # postings page gliched out so filtered for less results
+    postings = list(collections.find({'company': "Lever (Sales)"}).sort('_id', -1))
     dashboard = list(collections2.find({"user": session['username']}, {"_id": 0, "postingID": 1}))
     dash = []
     for i in dashboard:
@@ -256,17 +257,8 @@ def user(email):
     if session['username'] == "":
         return redirect("/")
     userPostings = list(collections2.find({"user": email}))
-    current = list(collections2.find({"user": session['username']}))
-    dash = []
-    for i in current:
-        dash.append(i["postingID"])
-    currentUserPostings = []
-    for posting in userPostings:
-        if collections2.find({"user": session['username'], "postingID": posting["postingID"]}):
-            currentUserPostings.append(list(collections2.find({"user": session['username'], "postingID": posting["postingID"]}))[0])
-    userPostings = [elem for elem in userPostings if elem["postingID"] not in dash]
     users = list(collections3.find({"email": email}))
-    return render_template('eachUser.html', userPostings = userPostings, currentUserPostings = currentUserPostings, users = users, loggedIn = True)
+    return render_template('eachUser.html', userPostings = userPostings, users = users, loggedIn = True)
 
 
 @app.route('/addFromUser', methods=['GET','POST','ET'])
